@@ -1,0 +1,39 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# dotenv environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+logs/**/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+coverage/
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+
+# Misc
+*.swp
+*.swo
+.idea/
+*.tgz
+
+# Test coverage
+coverage/
+.nyc_output/
