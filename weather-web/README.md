@@ -1,46 +1,133 @@
-# Getting Started with Create React App
+# Weather Web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React + TypeScript web application for monitoring weather data and managing weather alerts.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- 🌦️ View real-time weather data for cities worldwide
+- 🚨 Create, view, and delete custom weather alerts
+- 🔎 Search and select cities from a dropdown
+- 📊 Interactive, sortable alerts table
+- ⚡ Fast & responsive UI with Styled Components
+- 🛡️ 100% TypeScript for type safety
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Data Sources
 
-### `npm test`
+- **Cities List:**  
+  The list of cities is fetched from a CSV file (`world_capitals_with_coordinates.csv`).  
+  The CSV file is parsed on the client using [PapaParse](https://www.papaparse.com/).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Clone the repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/yonatan92/tomorrow-io-home-assignment.git
+cd weather-web
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Install dependencies
 
-### `npm run eject`
+```bash
+npm install
+# or
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 3. Environment Variables
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Create a `.env` file in the root directory.  
+You can use `.env.example` as a template:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```env
+REACT_APP_ALERT_SERVICE_BASE_URL=http://localhost:3001
+REACT_APP_CITIES_CSV_URL=http://localhost:3000/assets/world_capitals_with_coordinates.csv
+REACT_APP_WEATHER_API_BASE_URL=http://localhost:3003
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**Note:**
 
-## Learn More
+- Do **not** commit your real `.env` file.
+- Only commit `.env.example` with placeholder values.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 4. Start the development server
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+# or
+yarn start
+```
+
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Scripts
+
+- `npm start` — Run the app in development mode
+- `npm run build` — Build for production
+- `npm test` — Run tests (if available)
+- `npm run lint` — Lint the codebase (if configured)
+
+---
+
+## Project Structure
+
+```
+src/
+  components/
+    alerts/
+      Alerts.tsx
+      CreateAlertForm.tsx
+  sharedComponents/
+    ActionButton.tsx
+    DropDown.tsx
+  store/
+    reducers/
+      alertReducer.ts
+      cityReducer.ts
+      weatherReducer.ts
+    index.ts
+  utils/
+    consts/
+      index.ts
+  types/
+    types.ts
+  App.tsx
+  index.tsx
+```
+
+---
+
+## Deployment
+
+You can deploy this app to [Render](https://render.com), Netlify, Vercel, or any static hosting provider.  
+For Render:
+
+- Set the **Root Directory** to your React app folder (if in a monorepo)
+- **Build Command:** `npm install && npm run build`
+- **Publish Directory:** `build`
+- Add your environment variables in the Render dashboard
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+## Notes
+
+- Make sure your backend/API services are running and accessible at the URLs specified in your `.env`.
+- For any issues, please open an issue on GitHub.
+
+---
+
+**Good luck with your review! 🚀**
