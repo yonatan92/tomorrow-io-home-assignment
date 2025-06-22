@@ -6,7 +6,9 @@ import Papa from "papaparse";
 export const fetchCities = createAsyncThunk<City[]>(
   "cities/fetchCities",
   async () => {
-    const CITIES_CSV_URL = process.env.REACT_APP_CITIES_CSV_URL;
+    const CITIES_CSV_URL =
+      process.env.REACT_APP_CITIES_CSV_URL ||
+      "http://localhost:3000/assets/world_capitals_with_coordinates.csv";
 
     if (!CITIES_CSV_URL) {
       throw new Error("CITIES_CSV_URL is not defined in environment variables");
