@@ -71,7 +71,10 @@ npm run build --prefix weather_api
 Or, to build all at once (if you have `concurrently` installed):
 
 ```sh
-concurrently "npm run build --prefix alert_api" "npm run build --prefix scheduled-alert-evaluator" "npm run build --prefix weather_api"
+     "scripts": {
+    "build": "concurrently \"npm run build --prefix scheduled-alert-evaluator\" \"npm run build --prefix weather_api\""
+  }"
+""
 ```
 
 ## Running All Projects Together
