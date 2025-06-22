@@ -1,14 +1,15 @@
 # Scheduled Alert Evaluator
 
-A Node.js/TypeScript service for evaluating weather-based alerts for users, using MongoDB and Mongoose.
+A Node.js/TypeScript service that evaluates weather-based alerts for users, using MongoDB and scheduled jobs.  
+Runs as a scheduled script (e.g., via GitHub Actions) and updates alert statuses based on live weather data.
 
 ---
 
 ## Features
 
-- **Weather Alert Evaluation:** Periodically checks weather data for user-defined locations and triggers alerts based on thresholds.
+- **Weather Alert Evaluation:** Checks weather data for user-defined locations and triggers alerts based on thresholds.
 - **MongoDB Integration:** Stores alerts and their statuses.
-- **Cron Scheduling:** Uses `node-cron` to run evaluations every 5 minutes.
+- **Scheduled Execution:** Designed to run on a schedule (e.g., every 5 minutes) using GitHub Actions or similar.
 - **Modular Codebase:** Organized into services, providers, and utilities.
 
 ---
@@ -19,14 +20,15 @@ A Node.js/TypeScript service for evaluating weather-based alerts for users, usin
 
 - Node.js (v18+ recommended)
 - npm
-- MongoDB instance (local or cloud)
+- MongoDB instance (local or cloud, e.g., MongoDB Atlas)
+- Weather API provider (Tomorrow.io, OpenWeather, etc.)
 
 ### Installation
 
 1. **Clone the repository:**
 
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/yonatan92/tomorrow-io-home-assignment
    cd scheduled-alert-evaluator
    ```
 
@@ -38,11 +40,17 @@ A Node.js/TypeScript service for evaluating weather-based alerts for users, usin
 
 3. **Configure environment variables:**
 
-   - Copy `.env.example` to `.env` and fill in your values (MongoDB URI, weather API base URL, etc.).
+   - Copy `.env.example` to `.env` and fill in your values.
 
-4. **Start the service:**
+4. **Build the project:**
+
    ```sh
-   npm run dev
+   npm run build
+   ```
+
+5. **Run the service (one-time evaluation):**
+   ```sh
+   npm start
    ```
 
 ---
@@ -50,17 +58,19 @@ A Node.js/TypeScript service for evaluating weather-based alerts for users, usin
 ## Project Structure
 
 ```
-src/
-  models/           # Mongoose models (Alert, Weather)
-  services/         # Business logic (alert evaluation, weather fetching)
-  providers/        # External API/database providers
-  utils/            # Utility functions
-  cron/             # Cron job entry point
-  types/            # TypeScript types
-.env.example        # Example environment variables
-.gitignore
-package.json
-README.md
+scheduled-alert-evaluator/
+  src/
+    models/           # Mongoose models (Alert, Weather)
+    services/         # Business logic (alert evaluation, weather fetching)
+    providers/        # External API/database providers
+    utils/            # Utility functions
+    cron/             # (Optional) Cron job entry point
+    types/            # TypeScript types
+  .github/workflows/  # GitHub Actions workflow files
+  .env.example        # Example environment variables
+  .gitignore
+  package.json
+  README.md
 ```
 
 ---
@@ -68,46 +78,35 @@ README.md
 ## Usage
 
 - **Alerts** are stored in MongoDB and grouped by location.
-- Every 5 minutes, the service fetches weather data for each location and evaluates all alerts for that location.
-- If an alert's threshold is crossed, its `triggered` status is updated.
-
----
-
-## Scripts
-
-- `npm run dev` — Start the service in development mode with hot-reloading.
-- `npm test` — (Placeholder) Add your tests here.
+- On each run, the service fetches weather data for each location and evaluates all alerts for that location.
+- If an alert's threshold is crossed, its `triggered` status is updated in the database.
 
 ---
 
 ## Environment Variables
 
-Create a `.env` file in the root directory. Example:
+Copy `.env.example` to `.env` and fill in your values.
 
 ```
-MONGODB_URI=mongodb://localhost:27017/alerts
+MONGODB_URI=your-mongodb-connection-string
 WEATHER_API_BASE_URL=https://your-weather-api.com
 ```
 
 ---
 
-## Assignment Suggestions (if sending as a home assignment)
+## GitHub Actions
 
-- Add support for new weather parameters (e.g., humidity, wind speed).
-- Implement REST API endpoints for managing alerts.
-- Add unit and integration tests.
-- Improve error handling and logging.
+A workflow file is provided at `.github/workflows/scheduled-alert-evaluator.yml` to run the evaluator on a schedule (every 5 minutes by default).
+
+- Add your secrets (`MONGODB_URI`, `WEATHER_API_BASE_URL`) in your GitHub repository settings under **Settings > Secrets and variables > Actions**.
 
 ---
 
-## Dependencies
+## Scripts
 
-- [mongoose](https://www.npmjs.com/package/mongoose) `8.3.4`
-- [express](https://www.npmjs.com/package/express)
-- [node-cron](https://www.npmjs.com/package/node-cron)
-- [dotenv](https://www.npmjs.com/package/dotenv)
-- [axios](https://www.npmjs.com/package/axios)
-- TypeScript, ts-node, nodemon (for development)
+- `npm run build` — Compile TypeScript to JavaScript.
+- `npm start` — Run the compiled evaluator (single run).
+- `npm run dev` — Start in development mode with hot-reloading.
 
 ---
 
@@ -116,7 +115,3 @@ WEATHER_API_BASE_URL=https://your-weather-api.com
 ISC
 
 ---
-
-## Author
-
-Your Name Here
