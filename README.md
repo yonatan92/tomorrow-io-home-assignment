@@ -58,6 +58,22 @@ This project is focused on **capital cities only**.
      WEATHER_API_KEY=your_api_key_here
      ```
 
+## Building the Backend Services
+
+Before running the backend services, you must compile the TypeScript code:
+
+```sh
+npm run build --prefix alert_api
+npm run build --prefix scheduled-alert-evaluator
+npm run build --prefix weather_api
+```
+
+Or, to build all at once (if you have `concurrently` installed):
+
+```sh
+concurrently "npm run build --prefix alert_api" "npm run build --prefix scheduled-alert-evaluator" "npm run build --prefix weather_api"
+```
+
 ## Running All Projects Together
 
 You can use [concurrently](https://www.npmjs.com/package/concurrently) to run all services at once.
@@ -77,3 +93,13 @@ You can use [concurrently](https://www.npmjs.com/package/concurrently) to run al
      }
    }
    ```
+
+3. **Start all services:**
+
+   ```sh
+   npm run dev
+   ```
+
+---
+**Note:**  
+If you make changes to the backend TypeScript code, re-run the build commands before starting the services again.
