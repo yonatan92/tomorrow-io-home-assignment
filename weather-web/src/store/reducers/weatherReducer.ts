@@ -21,7 +21,8 @@ type WeatherData = {
 } | null;
 
 // --- API Base URL ---
-const WEATHER_API_BASE_URL = process.env.REACT_APP_WEATHER_API_BASE_URL;
+const WEATHER_API_BASE_URL =
+  process.env.REACT_APP_WEATHER_API_BASE_URL || "http://localhost:3003";
 
 // --- Async Thunks ---
 export const fetchWeather = createAsyncThunk(
