@@ -68,41 +68,40 @@ npm run build --prefix scheduled-alert-evaluator
 npm run build --prefix weather_api
 ```
 
-Or, to build all at once (if you have `concurrently` installed):
+## Running the Services
 
-```sh
-     "scripts": {
-    "build": "concurrently \"npm run build --prefix scheduled-alert-evaluator\" \"npm run build --prefix weather_api\""
-  }"
-""
-```
+> **Note:**  
+> We no longer use `concurrently` to run all services at once.  
+> **You must run each service in a separate terminal window.**
 
-## Running All Projects Together
+1. **Start each backend service:**
 
-You can use [concurrently](https://www.npmjs.com/package/concurrently) to run all services at once.
-
-1. **Install `concurrently` in the root folder:**
+   Open a new terminal window for each service and run:
 
    ```sh
-   npm install --save-dev concurrently
+   cd alert_api
+   npm start
    ```
-
-2. **Add this script to your root `package.json`:**
-   ```json
-   // package.json
-   {
-     "scripts": {
-       "dev": "concurrently \"npm start --prefix alert_api\" \"npm start --prefix scheduled-alert-evaluator\" \"npm start --prefix weather_api\" \"npm start --prefix weather-web\""
-     }
-   }
-   ```
-
-3. **Start all services:**
 
    ```sh
-   npm run dev
+   cd scheduled-alert-evaluator
+   npm start
+   ```
+
+   ```sh
+   cd weather_api
+   npm start
+   ```
+
+2. **Start the frontend:**
+
+   In a separate terminal window:
+
+   ```sh
+   cd weather-web
+   npm start
    ```
 
 ---
-**Note:**  
-If you make changes to the backend TypeScript code, re-run the build commands before starting the services again.
+
+**If you make changes to the backend TypeScript code, re-run the build commands before starting the services again.**
