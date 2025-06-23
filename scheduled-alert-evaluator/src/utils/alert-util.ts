@@ -3,8 +3,7 @@ import { ThresholdOperator } from "../types/alert-types";
 export function isAlertTriggered(
   operator: ThresholdOperator,
   weatherValue: number,
-  thresholdValue: number,
-  logger: typeof console | { warn: (...args: any[]) => void }
+  thresholdValue: number
 ): boolean {
   switch (operator) {
     case ThresholdOperator.GT:
@@ -18,7 +17,7 @@ export function isAlertTriggered(
     case ThresholdOperator.LTE:
       return weatherValue <= thresholdValue;
     default:
-      logger.warn(`Unknown operator: ${operator}`);
+      console.warn(`Unknown operator: ${operator}`);
       return false;
   }
 }

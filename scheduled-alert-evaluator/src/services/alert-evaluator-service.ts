@@ -6,7 +6,6 @@ import { fetchWeather } from "./weather-service";
 import { isAlertTriggered } from "../utils/alert-util";
 import { IAlert } from "../models/alert";
 import { ThresholdOperator } from "../types/alert-types";
-import { logger } from "../utils/logger";
 import { Weather, WeatherData } from "../models/weather";
 
 /**
@@ -23,17 +22,14 @@ export const evaluateAlerts = async (): Promise<void> => {
       Array.from(locationAlertsMap.entries()).map(
         async ([locationName, alerts]) => {
           try {
-            // Fetch weather data for the location
             const apiWeather = await fetchWeather({
               lat: alerts[0].location.lat,
               lon: alerts[0].location.lon,
               city: locationName,
             });
 
-            // Parse API response to WeatherData
             const weather: WeatherData = Weather.parseFromApi(apiWeather);
 
-            // Evaluate each alert for this location
             await Promise.all(
               alerts.map(async (alert) => {
                 try {
@@ -41,30 +37,29 @@ export const evaluateAlerts = async (): Promise<void> => {
                   const triggered = isAlertTriggered(
                     operator as ThresholdOperator,
                     weather.temperature,
-                    value,
-                    logger
+                    value
                   );
                   if (alert.triggered !== triggered) {
                     await updateAlertStatus(alert.id, triggered);
-                    logger.info(
+                    console.info(
                       `Alert for user ${alert.userId} at ${
                         alert.location.name
                       } is now ${triggered ? "triggered" : "not triggered"}`
                     );
                   }
                 } catch (error) {
-                  logger.error("Error evaluating alert:", error);
+                  console.error("Error evaluating alert:", error);
                 }
               })
             );
           } catch (error) {
-            logger.error(`Error processing location ${locationName}:`, error);
+            console.error(`Error processing location ${locationName}:`, error);
           }
         }
       )
     );
   } catch (error) {
-    logger.error("Error in evaluateAlerts:", error);
+    console.error("Error in evaluateAlerts:", error);
     throw error;
   }
 };

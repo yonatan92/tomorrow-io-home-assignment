@@ -1,6 +1,5 @@
 import { getWeatherByLocation } from "../../providers/weather-api-provider";
 import { Weather, WeatherData } from "../../models/weather";
-import { logger } from "../../utils/logger";
 
 /**
  * Service to fetch and parse weather data using the provider.
@@ -16,7 +15,7 @@ export const fetchWeatherService = async (location: {
 
     return parsedWeatherData;
   } catch (error) {
-    logger.error("Failed to fetch or parse weather data:", error);
+    console.error("Failed to fetch or parse weather data:", error);
     throw error;
   }
 };
