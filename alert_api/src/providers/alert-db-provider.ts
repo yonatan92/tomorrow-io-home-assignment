@@ -32,7 +32,10 @@ export class AlertDbProvider {
     const path = "AlertDbProvider/updateById";
     console.info(`${path} - start`, { id, data });
     try {
-      const updatedAlert = await Alert.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+      const updatedAlert = await Alert.findByIdAndUpdate(id, data, {
+        new: true,
+        runValidators: true,
+      });
       console.info(`${path} - end`, { updatedAlert });
       return updatedAlert;
     } catch (error) {

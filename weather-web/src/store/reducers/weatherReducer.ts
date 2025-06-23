@@ -5,7 +5,7 @@ type City = {
   city: string;
   country: string;
   lat: string;
-  lan: string;
+  lng: string;
   isDefault?: boolean;
 };
 
@@ -28,8 +28,8 @@ const WEATHER_API_BASE_URL =
 export const fetchWeather = createAsyncThunk(
   "weather/fetchWeather",
   async (cityObj: City) => {
-    const { lat, lan, city } = cityObj;
-    const url = `${WEATHER_API_BASE_URL}/weather-data?lat=${lat}&lon=${lan}&city=${city}`;
+    const { lat, lng, city } = cityObj;
+    const url = `${WEATHER_API_BASE_URL}/weather-data?lat=${lat}&lng=${lng}&city=${city}`;
     const response = await fetch(url);
     const data = await response.json();
 

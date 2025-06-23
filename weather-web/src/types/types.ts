@@ -2,7 +2,7 @@ export type City = {
   city: string;
   country: string;
   lat: string;
-  lan: string;
+  lng: string;
 };
 
 export type StatusOption = {

@@ -5,8 +5,9 @@ import {
 import { fetchWeather } from "./weather-service";
 import { isAlertTriggered } from "../utils/alert-util";
 import { IAlert } from "../models/alert";
-import { ThresholdOperator } from "../types/alert-types";
+import { ThresholdOperator, Threshold } from "../types/alert-types";
 import { Weather, WeatherData } from "../models/weather";
+import { sendNotification } from "./notification-sms-service";
 
 /**
  * Evaluates all alerts grouped by location.
@@ -21,40 +22,35 @@ export const evaluateAlerts = async (): Promise<void> => {
     await Promise.all(
       Array.from(locationAlertsMap.entries()).map(
         async ([locationName, alerts]) => {
-          try {
-            const apiWeather = await fetchWeather({
-              lat: alerts[0].location.lat,
-              lon: alerts[0].location.lon,
-              city: locationName,
-            });
+          const { lat, lon } = alerts[0].location;
+          const apiWeather = await fetchWeather({
+            lat,
+            lon,
+            city: locationName,
+          });
 
-            const weather: WeatherData = Weather.parseFromApi(apiWeather);
+          const weather: WeatherData = Weather.parseFromApi(apiWeather);
 
-            await Promise.all(
-              alerts.map(async (alert) => {
-                try {
-                  const { operator, value } = alert.threshold;
-                  const triggered = isAlertTriggered(
-                    operator as ThresholdOperator,
-                    weather.temperature,
-                    value
-                  );
-                  if (alert.triggered !== triggered) {
-                    await updateAlertStatus(alert.id, triggered);
-                    console.info(
-                      `Alert for user ${alert.userId} at ${
-                        alert.location.name
-                      } is now ${triggered ? "triggered" : "not triggered"}`
-                    );
-                  }
-                } catch (error) {
-                  console.error("Error evaluating alert:", error);
+          await Promise.all(
+            alerts.map(async (alert) => {
+              try {
+                const { operator, value }: Threshold = alert.threshold;
+                const triggered = isAlertTriggered(
+                  operator,
+                  weather.temperature,
+                  value
+                );
+
+                if (alert.triggered !== triggered) {
+                  await updateAlertStatus(alert.id, triggered);
+
+                  sendNotification(alert);
                 }
-              })
-            );
-          } catch (error) {
-            console.error(`Error processing location ${locationName}:`, error);
-          }
+              } catch (error) {
+                console.error("Error evaluating alert:", error);
+              }
+            })
+          );
         }
       )
     );

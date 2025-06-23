@@ -18,7 +18,8 @@ export class AlertService {
     threshold: Threshold,
     name?: string,
     description?: string,
-    userId?: string
+    userId?: string,
+    phoneNumber?: string
   ): Promise<IAlert> => {
     const alertData: Partial<IAlert> = {
       location,
@@ -27,56 +28,53 @@ export class AlertService {
       name,
       description,
       userId,
+      phoneNumber,
     };
     try {
       return await this.alertDbService.createAlert(alertData);
     } catch (error) {
       console.error("Error in createAlert:", error);
-      throw error;
+      return Promise.reject(error);
     }
   };
 
   getAlertById = async (id: string): Promise<IAlert | null> => {
-    let alert: IAlert | null = null;
     try {
-      alert = await this.alertDbService.getAlertById(id);
+      return await this.alertDbService.getAlertById(id);
     } catch (error) {
       console.error("Error in getAlertById:", error);
+      return null;
     }
-    return alert;
   };
 
   updateAlert = async (
     id: string,
     data: Partial<IAlert>
   ): Promise<IAlert | null> => {
-    let updatedAlert: IAlert | null = null;
     try {
-      updatedAlert = await this.alertDbService.updateAlert(id, data);
+      return await this.alertDbService.updateAlert(id, data);
     } catch (error) {
       console.error("Error in updateAlert:", error);
+      return null;
     }
-    return updatedAlert;
   };
 
   getAlerts = async (): Promise<object[]> => {
-    let alerts: object[] = [];
     try {
-      alerts = await this.alertDbService.getAlerts();
+      return await this.alertDbService.getAlerts();
     } catch (error) {
       console.error("Error in getAlerts:", error);
+      return [];
     }
-    return alerts;
   };
 
   deleteAlert = async (id: string): Promise<boolean> => {
-    let deleted = false;
     try {
-      deleted = await this.alertDbService.deleteAlert(id);
+      return await this.alertDbService.deleteAlert(id);
     } catch (error) {
       console.error("Error in deleteAlert:", error);
+      return false;
     }
-    return deleted;
   };
 }
 

@@ -8,8 +8,15 @@ export class AlertController {
     const path = "AlertController/createAlert";
     console.info(`${path} - start`, { body: req.body });
     try {
-      const { location, parameter, threshold, name, description, userId } =
-        req.body;
+      const {
+        location,
+        parameter,
+        threshold,
+        name,
+        description,
+        userId,
+        phoneNumber,
+      } = req.body;
 
       if (
         !location ||
@@ -35,7 +42,8 @@ export class AlertController {
         threshold,
         name,
         description,
-        userId
+        userId,
+        phoneNumber
       );
       const response = Alert.parseToResponse(alert);
       console.info(`${path} - end`, { response });

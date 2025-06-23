@@ -15,7 +15,8 @@ export interface IAlert extends Document {
   userId?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  triggered: boolean; // This is correct!
+  triggered: boolean;
+  phoneNumber?: string;
 }
 
 export interface AlertModel extends mongoose.Model<IAlert> {
@@ -29,6 +30,7 @@ const AlertSchema = new Schema<IAlert>(
   {
     name: { type: String, trim: true, required: true },
     userId: { type: String, required: true },
+    phoneNumber: { type: String },
     description: { type: String, trim: true },
     location: {
       name: { type: String, required: true },

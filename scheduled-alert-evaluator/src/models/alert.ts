@@ -1,3 +1,4 @@
+import { PhoneNumber } from "./../../node_modules/twilio/lib/interfaces.d";
 import mongoose, { Document, Schema } from "mongoose";
 import { ThresholdOperator, Threshold } from "../types/alert-types";
 
@@ -17,6 +18,7 @@ export interface IAlert extends Document {
   createdAt?: Date;
   updatedAt?: Date;
   triggered: boolean;
+  phoneNumber?: string;
 }
 
 export interface AlertModel extends mongoose.Model<IAlert> {
@@ -31,6 +33,7 @@ const AlertSchema = new Schema<IAlert>(
     name: { type: String, trim: true, required: true },
     userId: { type: String, required: true },
     description: { type: String, trim: true },
+    phoneNumber: { type: String, trim: true },
     location: {
       name: { type: String, required: true },
       lat: { type: Number, required: true },
@@ -82,6 +85,7 @@ AlertSchema.statics.parseFromDb = function (alert: any) {
     id: plainAlert._id ? String(plainAlert._id) : plainAlert.id,
     name: plainAlert.name,
     description: plainAlert.description,
+    phoneNumber: plainAlert.phoneNumber,
     location: plainAlert.location,
     parameter: plainAlert.parameter,
     threshold: plainAlert.threshold,

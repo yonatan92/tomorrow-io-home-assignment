@@ -21,6 +21,8 @@ const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onClose }) => {
   const [description, setDescription] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   useEffect(() => {
     dispatch(fetchCities());
@@ -41,6 +43,19 @@ const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onClose }) => {
     setSelectedCityObj(found || null);
   }, [city, cities]);
 
+  const validatePhone = (value: string) => {
+    if (value && !/^\+?\d{7,15}$/.test(value)) {
+      setPhoneError("Invalid phone number format");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+    validatePhone(e.target.value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
@@ -48,6 +63,11 @@ const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onClose }) => {
 
     if (!selectedCityObj) {
       setFormError("Please select a valid city.");
+      return;
+    }
+
+    if (phoneNumber && phoneError) {
+      setFormError("Please enter a valid phone number or leave it empty.");
       return;
     }
 
@@ -66,6 +86,7 @@ const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onClose }) => {
       name: description,
       description,
       userId,
+      phoneNumber: phoneNumber || undefined,
     };
 
     try {
@@ -172,6 +193,19 @@ const CreateAlertForm: React.FC<CreateAlertFormProps> = ({ onClose }) => {
               type="number"
               required
             />
+
+            <StyledLabel htmlFor="phoneNumber">
+              Phone number (for SMS update)
+            </StyledLabel>
+            <StyledInput
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={phoneNumber}
+              onChange={handlePhoneChange}
+              placeholder="+1234567890"
+            />
+            {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
 
             <ButtonRow>
               <StyledButton type="submit" disabled={isLoading}>

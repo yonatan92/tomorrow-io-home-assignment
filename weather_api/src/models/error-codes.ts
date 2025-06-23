@@ -1,5 +1,4 @@
 export class ErrorCodes {
-  // Add your custom weather error codes here
   static get INVALID_INPUT(): string {
     return "INVALID_INPUT";
   }
