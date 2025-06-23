@@ -5,9 +5,6 @@ import {
 import type { IAlert } from "../models/alert";
 import { Alert } from "../models/alert";
 
-/**
- * Fetch all alerts from the database.
- */
 export const getAlerts = async (): Promise<IAlert[]> => {
   try {
     return await fetchAlerts();
@@ -17,9 +14,6 @@ export const getAlerts = async (): Promise<IAlert[]> => {
   }
 };
 
-/**
- * Update the triggered status of an alert by its ID.
- */
 export const updateAlertStatus = async (
   alertId: string,
   triggered: boolean
@@ -32,9 +26,6 @@ export const updateAlertStatus = async (
   }
 };
 
-/**
- * Get a mapping of location name to alerts.
- */
 export const aggregateAlertsByLocationName = async (): Promise<
   Map<string, any[]> | undefined
 > => {
@@ -60,7 +51,6 @@ export const aggregateAlertsByLocationName = async (): Promise<
       return;
     }
 
-    // Parse each alert before adding to the map
     const locationAlertsMap = new Map<string, any[]>();
     alerts.forEach((group) => {
       const parsedAlerts = Alert.parseListFromDb(group.alerts);

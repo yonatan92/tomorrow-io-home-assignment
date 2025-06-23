@@ -19,7 +19,6 @@ export interface IAlert extends Document {
   triggered: boolean;
 }
 
-// Extend the Mongoose Model type to include custom statics
 export interface AlertModel extends mongoose.Model<IAlert> {
   parseListFromDb(alerts: IAlert[]): object[];
   parseFromDb(alert: IAlert): object;
@@ -60,8 +59,6 @@ const AlertSchema = new Schema<IAlert>(
   }
 );
 
-// --- Schema Transformations & Statics ---
-
 // toJSON transform for consistent API output
 AlertSchema.set("toJSON", {
   transform: (doc, ret) => {
@@ -78,7 +75,6 @@ AlertSchema.set("toJSON", {
   },
 });
 
-// Static method: parse a single DB document or plain object to plain object
 AlertSchema.statics.parseFromDb = function (alert: any) {
   const plainAlert =
     typeof alert.toJSON === "function" ? alert.toJSON() : alert;
@@ -100,11 +96,8 @@ AlertSchema.statics.parseFromDb = function (alert: any) {
   };
 };
 
-// Static method: parse a list of DB documents or plain objects to plain objects
 AlertSchema.statics.parseListFromDb = function (alerts: any[]) {
   return alerts.map((alert) => (this as AlertModel).parseFromDb(alert));
 };
-
-// --- Model Export ---
 
 export const Alert = mongoose.model<IAlert, AlertModel>("Alert", AlertSchema);
