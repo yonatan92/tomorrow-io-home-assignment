@@ -18,7 +18,6 @@ export interface IAlert extends Document {
   triggered: boolean; // This is correct!
 }
 
-// Extend the Mongoose Model type to include custom statics
 export interface AlertModel extends mongoose.Model<IAlert> {
   parseToResponse(alert: IAlert): object;
   parseListFromDb(alerts: IAlert[]): object[];
@@ -26,7 +25,6 @@ export interface AlertModel extends mongoose.Model<IAlert> {
   parseListToResponse(alerts: IAlert[]): object[];
 }
 
-// Mongoose schema for Alert
 const AlertSchema = new Schema<IAlert>(
   {
     name: { type: String, trim: true, required: true },
@@ -69,7 +67,6 @@ AlertSchema.set("toJSON", {
   },
 });
 
-// Static method: parse a single DB document to plain object
 AlertSchema.statics.parseFromDb = function (alert: IAlert) {
   const doc = typeof alert.toObject === "function" ? alert.toObject() : alert;
 
@@ -89,12 +86,10 @@ AlertSchema.statics.parseFromDb = function (alert: IAlert) {
   return parsedAlert;
 };
 
-// Static method: parse a list of DB documents to plain objects
 AlertSchema.statics.parseListFromDb = function (alerts: IAlert[]) {
   return alerts.map((alert: IAlert) => (this as AlertModel).parseFromDb(alert));
 };
 
-// Static method: parse a single response object (could be customized for API response)
 AlertSchema.statics.parseToResponse = function (alert: IAlert) {
   const id = alert._id ? alert._id.toString() : alert.id;
   const parsedResponse = {
@@ -117,7 +112,6 @@ AlertSchema.statics.parseToResponse = function (alert: IAlert) {
   return parsedResponse;
 };
 
-// Static method: parse a list of response objects
 AlertSchema.statics.parseListToResponse = function (alerts: IAlert[]) {
   const responses = alerts.map((alert: IAlert) =>
     (this as AlertModel).parseToResponse(alert)
@@ -125,5 +119,4 @@ AlertSchema.statics.parseListToResponse = function (alerts: IAlert[]) {
   return responses;
 };
 
-// Export the model
 export const Alert = mongoose.model<IAlert, AlertModel>("Alert", AlertSchema);
