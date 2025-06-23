@@ -24,9 +24,6 @@ export class WeatherData {
     Object.assign(this, data);
   }
 
-  /**
-   * Parses API response and returns a WeatherData instance.
-   */
   static parseObjectFromApiResponse(apiResponse: any): WeatherData {
     const path = "WeatherData/parseObjectFromApiResponse";
     console.info(`${path} - start`, { apiResponse });
@@ -61,9 +58,6 @@ export class WeatherData {
     return weatherData;
   }
 
-  /**
-   * Converts WeatherData instance to a response object with selected fields.
-   */
   static parseObjectToResponse(weatherData: WeatherData): object {
     const path = "WeatherData/parseObjectToResponse";
     console.info(`${path} - start`, { weatherData });
