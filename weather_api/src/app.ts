@@ -4,7 +4,6 @@ import { WeatherDataController } from "./controllers/WeatherDataController";
 
 const app: Application = express();
 
-// Add middleware before routes
 app.use(express.json());
 app.use(cors());
 

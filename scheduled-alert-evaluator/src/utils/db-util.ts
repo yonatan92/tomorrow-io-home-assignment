@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-const uri = process.env.MONGO_URI || "mongodb://localhost:27017/alert_db";
+const uri =
+  process.env.MONGO_URI ||
+  "mongodb+srv://yonatank92:<db_password>@cluster0.u6q0nvw.mongodb.net/";
 const dbName = process.env.MONGO_DB || "alert_db"; // <-- dbName right after uri
 
 export async function connectToMongo(): Promise<typeof mongoose> {
