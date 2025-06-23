@@ -1,5 +1,5 @@
 import { IAlert, Alert } from "../../models/alert";
-import { AlertDbProvider } from "../../db/alert-db-provider";
+import { AlertDbProvider } from "../../providers/alert-db-provider";
 
 export class AlertDbService {
   private _alertDbProvider: AlertDbProvider | null = null;
